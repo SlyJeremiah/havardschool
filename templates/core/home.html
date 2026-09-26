@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% load static embeds %}
+
+{% block content %}
+<section class="hero position-relative overflow-hidden">
+  <div class="container py-5">
+    <div class="row align-items-center g-5 py-lg-4">
+      <div class="col-lg-6">
+        <span class="eyebrow"><i class="bi bi-mortarboard-fill me-1"></i>{{ site.tagline }}</span>
+        <h1 class="display-4 mt-3 mb-3">{{ site.hero_title }}</h1>
+        <p class="lead text-body-secondary mb-4">{{ site.hero_subtitle }}</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="{% url 'admissions:apply' %}" class="btn btn-brand btn-lg rounded-pill px-4" data-track="hero_apply">Enrol your child</a>
+          <a href="{% url 'academics:list' %}" class="btn btn-outline-navy btn-lg rounded-pill px-4">Our programmes</a>
+        </div>
+        <div class="d-flex flex-wrap gap-4 mt-4 small text-body-secondary">
+          <span><i class="bi bi-geo-alt-fill text-orange me-1"></i>Southwood, Kwekwe</span>
+          <span><i class="bi bi-patch-check-fill text-green me-1"></i>Registered ECD Centre</span>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="hero-visual">
+          {% if site.hero_image %}
+            <img src="{{ site.hero_image.url }}" alt="Learners at {{ site.school_name }}" class="img-fluid rounded-5 shadow-lg">
+          {% else %}
+            <img src="{% static 'img/hero-illustration.svg' %}" alt="" class="img-fluid">
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if site.stat_learners or site.stat_teachers or site.stat_years or site.stat_graduates %}
+<section class="stats py-4">
+  <div class="container">
+    <div class="row text-center g-3">
+      {% if site.stat_learners %}<div class="col-6 col-md-3"><div class="stat-num" data-count="{{ site.stat_learners }}">{{ site.stat_learners }}</div><div class="small">Happy learners</div></div>{% endif %}
+      {% if site.stat_teachers %}<div class="col-6 col-md-3"><div class="stat-num" data-count="{{ site.stat_teachers }}">{{ site.stat_teachers }}</div><div class="small">Caring teachers</div></div>{% endif %}
+      {% if site.stat_years %}<div class="col-6 col-md-3"><div class="stat-num" data-count="{{ site.stat_years }}">{{ site.stat_years }}</div><div class="small">Years of excellence</div></div>{% endif %}
+      {% if site.stat_graduates %}<div class="col-6 col-md-3"><div class="stat-num" data-count="{{ site.stat_graduates }}">{{ site.stat_graduates }}</div><div class="small">Little graduates</div></div>{% endif %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if features %}
+<section class="py-5">
+  <div class="container py-lg-4">
+    <div class="text-center mb-5">
+      <span class="eyebrow">Why Little Harvard</span>
+      <h2 class="display-6 mt-2">Learning through play, every single day</h2>
+    </div>
+    <div class="row g-4">
+      {% for f in features %}
+      <div class="col-md-6 col-lg-4">
+        <div class="feature-card h-100 p-4 rounded-4 bg-white shadow-sm">
+          <div class="feature-icon mb-3 c{% cycle '1' '2' '3' %}"><i class="bi {{ f.icon }}"></i></div>
+          <h3 class="h5">{{ f.title }}</h3>
+          <p class="text-body-secondary mb-0">{{ f.description }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if programmes %}
+<section class="py-5 bg-soft">
+  <div class="container py-lg-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-end mb-4 gap-3">
+      <div>
+        <span class="eyebrow">Programmes</span>
+        <h2 class="display-6 mt-2 mb-0">A class for every little learner</h2>
+      </div>
+      <a href="{% url 'academics:list' %}" class="btn btn-outline-navy rounded-pill">View all programmes</a>
+    </div>
+    <div class="row g-4">
+      {% for p in programmes %}
+      <div class="col-md-6 col-lg-3">
+        <a href="{{ p.get_absolute_url }}" class="programme-card accent-{{ p.color }} d-block h-100 p-4 rounded-4 bg-white shadow-sm text-decoration-none text-reset card-hover">
+          <span class="badge rounded-pill mb-3">{{ p.age_range }}</span>
+          <h3 class="h4">{{ p.name }}</h3>
+          <p class="text-body-secondary small mb-3">{{ p.summary }}</p>
+          <span class="fw-bold small link-arrow">Learn more <i class="bi bi-arrow-right"></i></span>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="py-5">
+  <div class="container py-lg-4">
+    <div class="row g-5">
+      <div class="col-lg-8">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+          <div><span class="eyebrow">What's happening</span><h2 class="h1 mt-2 mb-0">Latest news</h2></div>
+          <a href="{% url 'news:list' %}" class="small fw-bold">All news →</a>
+        </div>
+        {% if posts %}
+        <div class="row g-4">
+          {% for post in posts %}<div class="col-md-6 {% if forloop.first %}col-xl-12{% else %}col-xl-6{% endif %}">{% include "partials/post_card.html" %}</div>{% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted">News and classroom stories will appear here soon. Follow us on <a href="{{ site.facebook_url }}" target="_blank" rel="noopener">Facebook</a> for daily updates.</p>
+        {% endif %}
+      </div>
+      <div class="col-lg-4">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+          <div><span class="eyebrow">Calendar</span><h2 class="h1 mt-2 mb-0">Upcoming</h2></div>
+          <a href="{% url 'news:events' %}" class="small fw-bold">All events →</a>
+        </div>
+        {% for event in events %}{% include "partials/event_item.html" %}{% empty %}
+        <p class="text-muted">No upcoming events right now — check back soon.</p>{% endfor %}
+        <div class="p-4 rounded-4 bg-navy text-white mt-4">
+          <h3 class="h5"><i class="bi bi-clock-fill me-2 text-yellow"></i>School hours</h3>
+          <ul class="list-unstyled small mb-0 opacity-75">{% for line in site.office_hours_lines %}<li>{{ line }}</li>{% endfor %}</ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if photos %}
+<section class="py-5 bg-soft">
+  <div class="container py-lg-4">
+    <div class="text-center mb-4">
+      <span class="eyebrow">Gallery</span>
+      <h2 class="display-6 mt-2">Moments from our classrooms</h2>
+    </div>
+    <div class="row g-2 g-md-3">
+      {% for ph in photos %}
+      <div class="col-6 col-md-3">
+        <a href="{{ ph.album.get_absolute_url }}" class="ratio ratio-1x1 d-block rounded-4 overflow-hidden gallery-thumb">
+          <img src="{{ ph.image.url }}" alt="{{ ph.caption|default:ph.album.title }}" class="object-fit-cover" loading="lazy">
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-4"><a href="{% url 'gallery:list' %}" class="btn btn-outline-navy rounded-pill px-4">Open gallery</a></div>
+  </div>
+</section>
+{% endif %}
+
+{% if testimonials %}
+<section class="py-5">
+  <div class="container py-lg-4">
+    <div class="text-center mb-5">
+      <span class="eyebrow">Parents say</span>
+      <h2 class="display-6 mt-2">Trusted by Kwekwe families</h2>
+    </div>
+    <div class="row g-4 justify-content-center">
+      {% for t in testimonials %}
+      <div class="col-md-6 col-lg-4">
+        <figure class="testimonial h-100 p-4 rounded-4 bg-white shadow-sm mb-0">
+          <div class="text-yellow mb-2">{% for i in "12345"|make_list %}{% if forloop.counter <= t.rating %}<i class="bi bi-star-fill"></i>{% endif %}{% endfor %}</div>
+          <blockquote class="mb-3">“{{ t.quote }}”</blockquote>
+          <figcaption class="small"><strong>{{ t.author }}</strong>{% if t.relation %}<span class="text-muted"> · {{ t.relation }}</span>{% endif %}</figcaption>
+        </figure>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

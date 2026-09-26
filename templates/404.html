@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Page not found | {{ site.school_name }}{% endblock %}
+{% block content %}
+<section class="py-5 text-center">
+  <div class="container py-5">
+    <div class="display-1 font-display text-orange">404</div>
+    <h1 class="h2 mb-3">Oops! This little chick wandered off.</h1>
+    <p class="text-body-secondary mb-4">The page you're looking for doesn't exist or has moved.</p>
+    <a href="{% url 'core:home' %}" class="btn btn-brand rounded-pill px-4">Back to home</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static embeds %}
+{% block title %}About us | {{ site.school_name }}{% endblock %}
+
+{% block content %}
+{% include "partials/page_header.html" with title="About us" subtitle=site.tagline %}
+
+<section class="py-5">
+  <div class="container py-lg-3">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-6">
+        <span class="eyebrow">Our story</span>
+        <h2 class="display-6 mt-2 mb-4">A nest where little graduates hatch</h2>
+        {% for para in site.about_intro|paragraphs %}<p class="text-body-secondary">{{ para }}</p>{% endfor %}
+      </div>
+      <div class="col-lg-6">
+        {% if site.about_image %}
+          <img src="{{ site.about_image.url }}" alt="{{ site.school_name }}" class="img-fluid rounded-5 shadow">
+        {% else %}
+          <img src="{% static 'img/hero-illustration.svg' %}" alt="" class="img-fluid">
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-soft">
+  <div class="container py-lg-3">
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="h-100 p-4 p-lg-5 rounded-4 bg-white shadow-sm">
+          <div class="feature-icon c1 mb-3"><i class="bi bi-bullseye"></i></div>
+          <h3>Our mission</h3>
+          <p class="text-body-secondary mb-0">{{ site.mission|linebreaksbr }}</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="h-100 p-4 p-lg-5 rounded-4 bg-white shadow-sm">
+          <div class="feature-icon c2 mb-3"><i class="bi bi-eye"></i></div>
+          <h3>Our vision</h3>
+          <p class="text-body-secondary mb-0">{{ site.vision|linebreaksbr }}</p>
+        </div>
+      </div>
+    </div>
+    {% if site.core_values_list %}
+    <div class="text-center mt-5">
+      <h3 class="mb-4">Our values</h3>
+      <div class="d-flex flex-wrap justify-content-center gap-2">
+        {% for v in site.core_values_list %}<span class="value-pill">{{ v }}</span>{% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% if features %}
+<section class="py-5">
+  <div class="container py-lg-3">
+    <div class="text-center mb-5"><span class="eyebrow">Our approach</span><h2 class="display-6 mt-2">How your child learns with us</h2></div>
+    <div class="row g-4">
+      {% for f in features %}
+      <div class="col-md-6 col-lg-4">
+        <div class="d-flex gap-3">
+          <div class="feature-icon c{% cycle '1' '2' '3' %} flex-shrink-0"><i class="bi {{ f.icon }}"></i></div>
+          <div><h3 class="h5">{{ f.title }}</h3><p class="text-body-secondary small">{{ f.description }}</p></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if staff %}
+<section class="py-5 bg-soft">
+  <div class="container py-lg-3">
+    <div class="text-center mb-5"><span class="eyebrow">Our team</span><h2 class="display-6 mt-2">Meet the people who care for your child</h2></div>
+    <div class="row g-4 justify-content-center">
+      {% for s in staff %}
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="text-center">
+          <div class="ratio ratio-1x1 rounded-circle overflow-hidden mx-auto mb-3 staff-photo">
+            {% if s.photo %}<img src="{{ s.photo.url }}" alt="{{ s.name }}" class="object-fit-cover" loading="lazy">
+            {% else %}<div class="placeholder-art d-flex align-items-center justify-content-center"><i class="bi bi-person"></i></div>{% endif %}
+          </div>
+          <h3 class="h6 mb-0">{{ s.name }}</h3>
+          <div class="small text-orange fw-semibold">{{ s.role }}</div>
+          {% if s.bio %}<p class="small text-body-secondary mt-2">{{ s.bio|truncatechars:140 }}</p>{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

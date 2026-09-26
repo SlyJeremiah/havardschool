@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Admissions | {{ site.school_name }}{% endblock %}
+
+{% block content %}
+{% include "partials/page_header.html" with title="Admissions" subtitle="Joining Little Harvard is simple. Here's everything you need to know to enrol your child." %}
+
+<section class="py-5">
+  <div class="container">
+    {% if steps %}
+    <div class="text-center mb-5"><span class="eyebrow">How to enrol</span><h2 class="display-6 mt-2">{{ steps|length }} easy steps</h2></div>
+    <div class="row g-4 mb-5">
+      {% for s in steps %}
+      <div class="col-md-6 col-lg-{% if steps|length >= 4 %}3{% else %}4{% endif %}">
+        <div class="step-card h-100 p-4 rounded-4 bg-white shadow-sm">
+          <div class="step-num">{{ forloop.counter }}</div>
+          <h3 class="h5 mt-3">{{ s.title }}</h3>
+          <p class="text-body-secondary small mb-0">{{ s.description }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="row g-5">
+      <div class="col-lg-6">
+        <h2 class="h3 mb-3">What to bring</h2>
+        <ul class="list-unstyled">
+          {% for r in requirements %}<li class="d-flex gap-2 mb-2"><i class="bi bi-check2-square text-green"></i><span>{{ r.text }}</span></li>
+          {% empty %}<li class="text-muted">Please contact the office for the list of requirements.</li>{% endfor %}
+        </ul>
+      </div>
+      <div class="col-lg-6">
+        <h2 class="h3 mb-3">Programmes &amp; fees</h2>
+        <div class="table-responsive rounded-4 shadow-sm">
+          <table class="table table-borderless align-middle mb-0 bg-white">
+            <thead class="table-light"><tr><th>Programme</th><th>Age</th><th>Fees</th></tr></thead>
+            <tbody>
+              {% for p in programmes %}
+              <tr><td><a href="{{ p.get_absolute_url }}" class="fw-semibold">{{ p.name }}</a></td><td>{{ p.age_range }}</td><td>{{ p.fees|default:"Contact office" }}</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <p class="small text-muted mt-2">Fees are per term and subject to change. Contact the office for the current fee structure and payment options.</p>
+      </div>
+    </div>
+
+    <div class="apply-band rounded-5 p-4 p-lg-5 mt-5 text-center">
+      {% if site.admissions_open %}
+      <h2 class="display-6">Enrolment is open</h2>
+      <p class="lead mb-4">Complete our short online application and we'll contact you within 2 working days.</p>
+      <a href="{% url 'admissions:apply' %}" class="btn btn-navy btn-lg rounded-pill px-5" data-track="admissions_apply">Start application</a>
+      {% else %}
+      <h2 class="display-6">Enrolment is currently closed</h2>
+      <p class="lead mb-4">You can still register your interest and we'll let you know when places open.</p>
+      <a href="{% url 'admissions:apply' %}" class="btn btn-navy btn-lg rounded-pill px-5">Join the waiting list</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% if faqs %}
+<section class="py-5 bg-soft">
+  <div class="container" style="max-width: 860px">
+    <h2 class="text-center mb-4">Questions parents ask</h2>
+    {% include "partials/faq.html" %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

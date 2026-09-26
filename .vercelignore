@@ -1,0 +1,6 @@
+.venv
+.env
+db.sqlite3
+media
+.claude
+**/__pycache__

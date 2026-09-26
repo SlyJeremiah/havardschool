@@ -1,0 +1,23 @@
+New online application: {{ a.reference }}
+
+CHILD
+  Name:            {{ a.child_name }}
+  Date of birth:   {{ a.child_dob|date:"j F Y" }}
+  Gender:          {{ a.get_child_gender_display }}
+  Programme:       {{ a.programme|default:"Not sure — please advise" }}
+  Start:           {{ a.get_start_term_display }} {{ a.start_year }}
+  Previous school: {{ a.previous_school|default:"-" }}
+  Medical/needs:   {{ a.medical_notes|default:"-" }}
+
+PARENT / GUARDIAN
+  Name:            {{ a.parent_name }} ({{ a.relationship }})
+  Phone:           {{ a.parent_phone }}
+  Email:           {{ a.parent_email }}
+  Address:         {{ a.home_address|default:"-" }}
+  Heard via:       {{ a.how_heard|default:"-" }}
+  Wants a visit:   {{ a.wants_visit|yesno:"Yes,No" }}
+
+Notes:
+{{ a.notes|default:"-" }}
+
+Manage this application: {{ admin_url }}

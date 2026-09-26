@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load embeds %}
+{% block title %}{{ programme.name }} ({{ programme.age_range }}) | {{ site.school_name }}{% endblock %}
+{% block meta_description %}{{ programme.summary }}{% endblock %}
+
+{% block content %}
+{% url 'academics:list' as list_url %}
+{% include "partials/page_header.html" with title=programme.name subtitle=programme.summary parent_url=list_url parent_label="Programmes" %}
+
+<section class="py-5">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-8">
+        {% if programme.image %}<img src="{{ programme.image.url }}" alt="{{ programme.name }}" class="img-fluid rounded-5 shadow-sm mb-4">{% endif %}
+        {% for para in programme.description|paragraphs %}<p>{{ para }}</p>{% endfor %}
+
+        {% if programme.learning_areas_list %}
+        <h2 class="h3 mt-5 mb-3">What your child will learn</h2>
+        <div class="row g-3">
+          {% for a in programme.learning_areas_list %}
+          <div class="col-sm-6"><div class="d-flex gap-2 align-items-start"><i class="bi bi-check-circle-fill text-green mt-1"></i><span>{{ a }}</span></div></div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if programme.schedule_list %}
+        <h2 class="h3 mt-5 mb-3">A typical day</h2>
+        <div class="timeline">
+          {% for time, activity in programme.schedule_list %}
+          <div class="timeline-item"><span class="time">{{ time }}</span><span>{{ activity }}</span></div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      <aside class="col-lg-4">
+        <div class="p-4 rounded-4 bg-white shadow-sm sticky-lg-top" style="top: 100px">
+          <h2 class="h5 mb-3">At a glance</h2>
+          <dl class="row small mb-4">
+            <dt class="col-5">Age</dt><dd class="col-7">{{ programme.age_range }}</dd>
+            {% if programme.class_size %}<dt class="col-5">Class size</dt><dd class="col-7">{{ programme.class_size }}</dd>{% endif %}
+            {% if programme.hours %}<dt class="col-5">Hours</dt><dd class="col-7">{{ programme.hours }}</dd>{% endif %}
+            <dt class="col-5">Fees</dt><dd class="col-7">{{ programme.fees|default:"Contact the office" }}</dd>
+          </dl>
+          <a href="{% url 'admissions:apply' %}?programme={{ programme.slug }}" class="btn btn-brand w-100 rounded-pill mb-2">Apply now</a>
+          <a href="{% url 'core:contact' %}" class="btn btn-outline-navy w-100 rounded-pill">Ask a question</a>
+        </div>
+        {% if others %}
+        <div class="mt-4">
+          <h3 class="h6 text-uppercase text-muted">Other programmes</h3>
+          <ul class="list-unstyled">{% for o in others %}<li class="mb-1"><a href="{{ o.get_absolute_url }}">{{ o.name }}</a> <span class="small text-muted">({{ o.age_range }})</span></li>{% endfor %}</ul>
+        </div>
+        {% endif %}
+      </aside>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% load static %}
+<article class="card h-100 border-0 shadow-sm card-hover">
+  <a href="{{ post.get_absolute_url }}" class="ratio ratio-16x9 d-block overflow-hidden rounded-top">
+    {% if post.cover_image %}
+      <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" class="object-fit-cover" loading="lazy">
+    {% else %}
+      <div class="placeholder-art d-flex align-items-center justify-content-center"><i class="bi bi-{% if post.video_url %}play-circle{% else %}newspaper{% endif %}"></i></div>
+    {% endif %}
+  </a>
+  <div class="card-body">
+    <div class="small mb-2"><span class="badge rounded-pill text-bg-light">{{ post.get_category_display }}</span>
+      <span class="text-muted ms-1">{{ post.published_at|date:"j M Y" }}</span></div>
+    <h3 class="h5 card-title"><a href="{{ post.get_absolute_url }}" class="stretched-link text-reset text-decoration-none">{{ post.title }}</a></h3>
+    <p class="card-text text-muted small mb-0">{{ post.excerpt|truncatechars:140 }}</p>
+  </div>
+</article>

@@ -1,0 +1,10 @@
+Dear {{ m.name }},
+
+Thank you for contacting {{ site.school_name|default:"Little Harvard ECD Centre" }}. We have received your message about "{{ m.subject }}" and will get back to you as soon as possible.
+
+If your enquiry is urgent, please call us on 079 020 5518.
+
+Warm regards,
+Little Harvard ECD Centre
+87 Link Drive, Southwood, Kwekwe
+"No doubt, the Little Graduate is hatched here!"

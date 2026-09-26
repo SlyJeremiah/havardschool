@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}News & Events | {{ site.school_name }}{% endblock %}
+
+{% block content %}
+{% include "partials/page_header.html" with title="News & classroom stories" subtitle="See what our little learners have been up to." %}
+
+<section class="py-5">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-8">
+        <div class="d-flex flex-wrap gap-2 mb-4">
+          <a href="{% url 'news:list' %}" class="btn btn-sm rounded-pill {% if not active_category %}btn-navy{% else %}btn-outline-navy{% endif %}">All</a>
+          {% for key, label in categories %}
+          <a href="?category={{ key }}" class="btn btn-sm rounded-pill {% if active_category == key %}btn-navy{% else %}btn-outline-navy{% endif %}">{{ label }}</a>
+          {% endfor %}
+        </div>
+        <div class="row g-4">
+          {% for post in page %}<div class="col-md-6">{% include "partials/post_card.html" %}</div>
+          {% empty %}<p class="text-muted">No posts yet.</p>{% endfor %}
+        </div>
+        {% if page.has_other_pages %}
+        <nav class="mt-5" aria-label="News pages">
+          <ul class="pagination justify-content-center">
+            {% if page.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page.previous_page_number }}{% if active_category %}&category={{ active_category }}{% endif %}">&laquo;</a></li>{% endif %}
+            {% for n in page.paginator.page_range %}
+            <li class="page-item {% if n == page.number %}active{% endif %}"><a class="page-link" href="?page={{ n }}{% if active_category %}&category={{ active_category }}{% endif %}">{{ n }}</a></li>
+            {% endfor %}
+            {% if page.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page.next_page_number }}{% if active_category %}&category={{ active_category }}{% endif %}">&raquo;</a></li>{% endif %}
+          </ul>
+        </nav>
+        {% endif %}
+      </div>
+      <aside class="col-lg-4">
+        <h2 class="h4 mb-3">Upcoming events</h2>
+        {% for event in upcoming %}{% include "partials/event_item.html" %}{% empty %}<p class="text-muted small">No upcoming events.</p>{% endfor %}
+        <a href="{% url 'news:events' %}" class="small fw-bold">Full calendar →</a>
+        {% if site.facebook_url %}
+        <div class="p-4 rounded-4 bg-navy text-white mt-4">
+          <h3 class="h5"><i class="bi bi-facebook me-2"></i>Daily updates</h3>
+          <p class="small opacity-75">We share classroom videos and reels on Facebook every week.</p>
+          <a href="{{ site.facebook_url }}" target="_blank" rel="noopener" class="btn btn-light btn-sm rounded-pill">Follow us</a>
+        </div>
+        {% endif %}
+      </aside>
+    </div>
+  </div>
+</section>
+{% endblock %}

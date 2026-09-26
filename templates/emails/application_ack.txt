@@ -1,0 +1,18 @@
+Dear {{ a.parent_name }},
+
+Thank you for applying to Little Harvard ECD Centre for {{ a.child_name }}.
+
+Your reference number is: {{ a.reference }}
+
+Our office will contact you on {{ a.parent_phone }} within 2 working days{% if a.wants_visit %} to arrange a school visit{% endif %}. Please keep your reference number handy.
+
+Summary of your application:
+  Programme: {{ a.programme|default:"To be advised" }}
+  Start:     {{ a.get_start_term_display }} {{ a.start_year }}
+
+If you have any questions, reply to this email or call 079 020 5518.
+
+Warm regards,
+Little Harvard ECD Centre
+87 Link Drive, Southwood, Kwekwe
+"No doubt, the Little Graduate is hatched here!"

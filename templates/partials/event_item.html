@@ -1,0 +1,13 @@
+<a href="{{ event.get_absolute_url }}" class="event-item d-flex gap-3 align-items-center text-decoration-none text-reset p-3 rounded-4 bg-white shadow-sm mb-3">
+  <div class="date-badge text-center flex-shrink-0">
+    <div class="fs-3 fw-bold lh-1">{{ event.date|date:"j" }}</div>
+    <div class="small text-uppercase">{{ event.date|date:"M" }}</div>
+  </div>
+  <div>
+    <div class="fw-bold">{{ event.title }}</div>
+    <div class="small text-muted">
+      {% if event.start_time %}<i class="bi bi-clock me-1"></i>{{ event.start_time|time:"H:i" }}{% if event.end_time %} – {{ event.end_time|time:"H:i" }}{% endif %} · {% endif %}
+      <i class="bi bi-geo-alt me-1"></i>{{ event.location }}
+    </div>
+  </div>
+</a>

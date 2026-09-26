@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load embeds %}
+{% block title %}Gallery | {{ site.school_name }}{% endblock %}
+
+{% block content %}
+{% include "partials/page_header.html" with title="Gallery" subtitle="Graduations, classroom activities, celebrations and everyday magic." %}
+
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4">
+      {% for album in albums %}
+      <div class="col-sm-6 col-lg-4">
+        <a href="{{ album.get_absolute_url }}" class="album-card d-block rounded-4 overflow-hidden shadow-sm text-decoration-none position-relative card-hover">
+          <div class="ratio ratio-4x3">
+            {% with img=album.cover_image %}
+            {% if img %}<img src="{{ img.url }}" alt="{{ album.title }}" class="object-fit-cover" loading="lazy">
+            {% else %}<div class="placeholder-art d-flex align-items-center justify-content-center"><i class="bi bi-images"></i></div>{% endif %}
+            {% endwith %}
+          </div>
+          <div class="album-caption p-3">
+            <div class="fw-bold">{{ album.title }}</div>
+            <div class="small opacity-75">{{ album.date|date:"F Y" }} · {{ album.photos.all|length }} photo{{ album.photos.all|length|pluralize }}</div>
+          </div>
+        </a>
+      </div>
+      {% empty %}
+      <p class="text-muted">Photo albums are coming soon.</p>
+      {% endfor %}
+    </div>
+
+    {% if videos %}
+    <h2 class="h3 mt-5 mb-4"><i class="bi bi-play-circle text-orange me-2"></i>Videos</h2>
+    <div class="row g-4">
+      {% for v in videos %}
+      {% with embed=v.url|video_embed_url %}
+      <div class="col-md-6 col-lg-4">
+        <div class="rounded-4 overflow-hidden shadow-sm bg-white h-100">
+          {% if embed %}
+          <div class="ratio ratio-16x9"><iframe src="{{ embed }}" title="{{ v.title }}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+          {% endif %}
+          <div class="p-3"><div class="fw-bold">{{ v.title }}</div>{% if v.description %}<div class="small text-muted">{{ v.description }}</div>{% endif %}
+            {% if not embed %}<a href="{{ v.url }}" target="_blank" rel="noopener" class="small">Watch video →</a>{% endif %}</div>
+        </div>
+      </div>
+      {% endwith %}
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

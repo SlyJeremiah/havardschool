@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Apply online | {{ site.school_name }}{% endblock %}
+
+{% block content %}
+{% url 'admissions:index' as adm_url %}
+{% include "partials/page_header.html" with title="Online application" subtitle="Takes about 5 minutes. Fields marked * are required." parent_url=adm_url parent_label="Admissions" %}
+
+<section class="py-5">
+  <div class="container" style="max-width: 920px">
+    <form method="post" novalidate class="p-4 p-lg-5 rounded-4 bg-white shadow-sm" data-track-submit="application_form">
+      {% csrf_token %}
+      {% if form.errors %}<div class="alert alert-danger">Please correct the highlighted fields below.</div>{% endif %}
+      <div class="hp" aria-hidden="true">{{ form.website }}</div>
+
+      <h2 class="h4 form-section"><span>1</span> About your child</h2>
+      <div class="row">
+        <div class="col-md-6">{% include "partials/field.html" with field=form.child_first_name %}</div>
+        <div class="col-md-6">{% include "partials/field.html" with field=form.child_last_name %}</div>
+        <div class="col-md-6">{% include "partials/field.html" with field=form.child_dob %}</div>
+        <div class="col-md-6">{% include "partials/field.html" with field=form.child_gender %}</div>
+        <div class="col-md-6">{% include "partials/field.html" with field=form.programme %}</div>
+        <div class="col-md-3">{% include "partials/field.html" with field=form.start_term %}</div>
+        <div class="col-md-3">{% include "partials/field.html" with field=form.start_year %}</div>
+        <div class="col-md-6">{% include "partials/field.html" with field=form.previous_school %}</div>
+        <div class="col-md-6">{% include "partials/field.html" with field=form.medical_notes %}</div>
+      </div>
+
+      <h2 class="h4 form-section mt-4"><span>2</span> Parent / guardian</h2>
+      <div class="row">
+        <div class="col-md-8">{% include "partials/field.html" with field=form.parent_name %}</div>
+        <div class="col-md-4">{% include "partials/field.html" with field=form.relationship %}</div>
+        <div class="col-md-6">{% include "partials/field.html" with field=form.parent_phone %}</div>
+        <div class="col-md-6">{% include "partials/field.html" with field=form.parent_email %}</div>
+        <div class="col-md-6">{% include "partials/field.html" with field=form.home_address %}</div>
+        <div class="col-md-6">{% include "partials/field.html" with field=form.how_heard %}</div>
+      </div>
+
+      <h2 class="h4 form-section mt-4"><span>3</span> Final details</h2>
+      {% include "partials/field.html" with field=form.notes %}
+      {% include "partials/field.html" with field=form.wants_visit %}
+      {% include "partials/field.html" with field=form.consent %}
+
+      <button class="btn btn-brand btn-lg rounded-pill px-5 mt-2" type="submit">Submit application <i class="bi bi-arrow-right ms-1"></i></button>
+    </form>
+  </div>
+</section>
+{% endblock %}

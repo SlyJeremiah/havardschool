@@ -1,0 +1,12 @@
+<div class="accordion accordion-flush rounded-4 overflow-hidden shadow-sm" id="faq">
+  {% for q in faqs %}
+  <div class="accordion-item">
+    <h3 class="accordion-header">
+      <button class="accordion-button {% if not forloop.first %}collapsed{% endif %} fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ q.pk }}" aria-expanded="{{ forloop.first|yesno:'true,false' }}">{{ q.question }}</button>
+    </h3>
+    <div id="faq{{ q.pk }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" data-bs-parent="#faq">
+      <div class="accordion-body text-body-secondary">{{ q.answer|linebreaksbr }}</div>
+    </div>
+  </div>
+  {% endfor %}
+</div>

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load embeds %}
+{% block title %}{{ event.title }} | {{ site.school_name }}{% endblock %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container" style="max-width: 820px">
+    <nav aria-label="breadcrumb"><ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'news:events' %}">Events</a></li>
+      <li class="breadcrumb-item active">{{ event.title }}</li>
+    </ol></nav>
+    <h1 class="display-6">{{ event.title }}</h1>
+    {% if event.is_past %}<span class="badge text-bg-secondary mb-3">This event has passed</span>{% endif %}
+    <div class="d-flex flex-wrap gap-4 my-3 text-body-secondary">
+      <span><i class="bi bi-calendar-event text-orange me-1"></i>{{ event.date|date:"l, j F Y" }}{% if event.end_date %} – {{ event.end_date|date:"j F Y" }}{% endif %}</span>
+      {% if event.start_time %}<span><i class="bi bi-clock text-green me-1"></i>{{ event.start_time|time:"H:i" }}{% if event.end_time %} – {{ event.end_time|time:"H:i" }}{% endif %}</span>{% endif %}
+      <span><i class="bi bi-geo-alt text-navy me-1"></i>{{ event.location }}</span>
+    </div>
+    {% if event.image %}<img src="{{ event.image.url }}" alt="{{ event.title }}" class="img-fluid rounded-4 shadow-sm my-3">{% endif %}
+    {% for para in event.description|paragraphs %}<p>{{ para|linebreaksbr }}</p>{% endfor %}
+    <a href="{% url 'news:events' %}" class="btn btn-outline-navy rounded-pill mt-3">← All events</a>
+  </div>
+</section>
+{% endblock %}

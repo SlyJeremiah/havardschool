@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Events calendar | {{ site.school_name }}{% endblock %}
+
+{% block content %}
+{% url 'news:list' as news_url %}
+{% include "partials/page_header.html" with title="Events calendar" subtitle="Open days, concerts, sports days, graduations and more." parent_url=news_url parent_label="News" %}
+
+<section class="py-5">
+  <div class="container" style="max-width: 900px">
+    <h2 class="h3 mb-4">Upcoming</h2>
+    {% for event in upcoming %}{% include "partials/event_item.html" %}{% empty %}
+    <p class="text-muted">No upcoming events have been scheduled yet.</p>{% endfor %}
+
+    {% if past %}
+    <h2 class="h3 mt-5 mb-4">Past events</h2>
+    <div class="opacity-75">{% for event in past %}{% include "partials/event_item.html" %}{% endfor %}</div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,12 @@
+New message from the website contact form
+
+Name:    {{ m.name }}
+Email:   {{ m.email }}
+Phone:   {{ m.phone|default:"-" }}
+Subject: {{ m.subject }}
+
+{{ m.message }}
+
+---
+Reply directly to this email to respond to {{ m.name }}.
+View in admin: {{ admin_url }}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Application received | {{ site.school_name }}{% endblock %}
+
+{% block content %}
+<section class="py-5 text-center">
+  <div class="container py-5" style="max-width: 720px">
+    <div class="success-icon mb-4"><i class="bi bi-check-lg"></i></div>
+    <h1 class="display-6">Thank you, {{ a.parent_name }}!</h1>
+    <p class="lead">We've received the application for <strong>{{ a.child_name }}</strong>.</p>
+    <div class="p-4 rounded-4 bg-soft my-4">
+      <div class="small text-muted text-uppercase">Your reference number</div>
+      <div class="display-6 font-display text-navy">{{ a.reference }}</div>
+    </div>
+    <p class="text-body-secondary">A confirmation has been sent to <strong>{{ a.parent_email }}</strong>. Our office will contact you on <strong>{{ a.parent_phone }}</strong> within 2 working days{% if a.wants_visit %} to arrange your school visit{% endif %}.</p>
+    <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+      <a href="{% url 'core:home' %}" class="btn btn-outline-navy rounded-pill px-4">Back to home</a>
+      {% if site.whatsapp %}<a href="https://wa.me/{{ site.whatsapp }}?text={{ 'Hello, my application reference is '|add:a.reference|urlencode }}" class="btn btn-brand rounded-pill px-4" target="_blank" rel="noopener"><i class="bi bi-whatsapp me-1"></i>Message us</a>{% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+{% if GA_MEASUREMENT_ID %}<script>gtag('event', 'generate_lead', {form: 'application'});</script>{% endif %}
+{% endblock %}
