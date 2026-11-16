@@ -128,6 +128,35 @@ class SiteTests(TestCase):
         self.assertEqual(r.status_code, 200)
         self.assertFalse(Application.objects.exists())
 
+    def test_footer_has_staff_login(self):
+        self.assertContains(self.client.get(reverse("core:home")), f'href="{reverse("admin:index")}"')
+
+    def test_admin_dashboard_superuser(self):
+        from django.contrib.auth.models import User
+        self._junior_post(grade="grade1")  # one new application
+        self.client.force_login(User.objects.create_superuser("boss", "b@example.test", "x"))
+        r = self.client.get(reverse("admin:index"))
+        self.assertEqual(r.status_code, 200)
+        for text in ("Quick actions", "New applications", "Latest applications", "Website setup",
+                     Application.objects.get().reference, "Write a news post"):
+            self.assertContains(r, text)
+
+    def test_admin_dashboard_limited_staff(self):
+        from django.contrib.auth.models import Permission, User
+        u = User.objects.create_user("editor", "e@example.test", "x", is_staff=True)
+        u.user_permissions.add(*Permission.objects.filter(codename__in=["add_post", "view_post", "change_post"]))
+        self.client.force_login(u)
+        r = self.client.get(reverse("admin:index"))
+        self.assertEqual(r.status_code, 200)
+        self.assertContains(r, "Write a news post")
+        self.assertNotContains(r, "Latest applications")
+        self.assertNotContains(r, "Website setup")
+
+    def test_admin_requires_login(self):
+        r = self.client.get(reverse("admin:index"))
+        self.assertEqual(r.status_code, 302)
+        self.assertContains(self.client.get(r.url), "Little Harvard")
+
     def test_video_embeds(self):
         self.assertIn("youtube-nocookie.com/embed/dQw4w9WgXcQ",
                       video_embed_url("https://youtu.be/dQw4w9WgXcQ"))

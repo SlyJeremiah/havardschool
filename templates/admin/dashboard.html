@@ -1,0 +1,109 @@
+{% extends "admin/index.html" %}
+{% load i18n static %}
+
+{% block coltype %}colM{% endblock %}
+{% block bodyclass %}{{ block.super }} lh-dashboard{% endblock %}
+{% block content_title %}{% endblock %}
+
+{% block content %}
+<div id="content-main" class="lh-dash">
+
+  <section class="lh-hero">
+    <div>
+      <p class="lh-eyebrow">{% now "l, j F Y" %}</p>
+      <h1>Hello, {% firstof user.first_name user.get_username %} 👋</h1>
+      <p class="lh-sub">Manage the Little Harvard &amp; Harvard Junior School website: news, events, photos, programmes and admissions.</p>
+    </div>
+    <a class="lh-btn lh-btn-light" href="/" target="_blank" rel="noopener"><i class="bi bi-globe2"></i> View website</a>
+  </section>
+
+  {% if dash_stats %}
+  <section class="lh-stats" aria-label="At a glance">
+    {% for s in dash_stats %}
+    <a class="lh-stat tone-{{ s.tone }}" href="{{ s.url }}">
+      <i class="bi {{ s.icon }}"></i>
+      <span class="lh-stat-value">{{ s.value }}</span>
+      <span class="lh-stat-label">{{ s.label }}</span>
+    </a>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  {% if dash_actions %}
+  <section class="lh-card">
+    <h2><i class="bi bi-lightning-charge"></i> Quick actions</h2>
+    <div class="lh-actions">
+      {% for a in dash_actions %}
+      <a class="lh-action" href="{{ a.url }}"><i class="bi {{ a.icon }}"></i><span>{{ a.label }}</span></a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <div class="lh-grid">
+    {% if dash_recent_apps is not None %}
+    <section class="lh-card">
+      <div class="lh-card-head">
+        <h2><i class="bi bi-person-lines-fill"></i> Latest applications</h2>
+        <a href="{% url 'admin:admissions_application_changelist' %}">View all →</a>
+      </div>
+      {% if dash_recent_apps %}
+      <table class="lh-table">
+        <thead><tr><th>Ref</th><th>Child</th><th>Programme</th><th>Status</th><th>Received</th></tr></thead>
+        <tbody>
+        {% for a in dash_recent_apps %}
+          <tr>
+            <td><a href="{% url 'admin:admissions_application_change' a.pk %}">{{ a.reference }}</a></td>
+            <td>{{ a.child_name }}</td>
+            <td>{{ a.programme|default:"—" }}{% if a.grade %} · {{ a.get_grade_display }}{% endif %}</td>
+            <td><span class="lh-badge status-{{ a.status }}">{{ a.get_status_display }}</span></td>
+            <td title="{{ a.created_at }}">{{ a.created_at|timesince }} ago</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% else %}<p class="lh-empty">No applications yet. They'll appear here as parents apply online.</p>{% endif %}
+    </section>
+    {% endif %}
+
+    {% if dash_recent_msgs is not None %}
+    <section class="lh-card">
+      <div class="lh-card-head">
+        <h2><i class="bi bi-chat-left-text"></i> Latest messages</h2>
+        <a href="{% url 'admin:core_contactmessage_changelist' %}">View all →</a>
+      </div>
+      {% if dash_recent_msgs %}
+      <ul class="lh-list">
+        {% for m in dash_recent_msgs %}
+        <li>
+          <a href="{% url 'admin:core_contactmessage_change' m.pk %}"><strong>{{ m.subject }}</strong></a>
+          {% if not m.is_handled %}<span class="lh-badge status-new">New</span>{% endif %}
+          <div class="lh-meta">{{ m.name }} · {{ m.created_at|timesince }} ago</div>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}<p class="lh-empty">No messages yet.</p>{% endif %}
+    </section>
+    {% endif %}
+  </div>
+
+  {% if dash_setup %}
+  <section class="lh-card">
+    <h2><i class="bi bi-gear"></i> Website setup</h2>
+    <ul class="lh-setup">
+      {% for c in dash_setup %}
+      <li class="{{ c.ok|yesno:'ok,todo' }}"><i class="bi {{ c.ok|yesno:'bi-check-circle-fill,bi-exclamation-circle-fill' }}"></i>
+        {{ c.label }}{% if not c.ok %}<span class="lh-meta"> · {{ c.hint }}</span>{% endif %}</li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  <section class="lh-card lh-applist">
+    <h2><i class="bi bi-grid"></i> All content</h2>
+    {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+  </section>
+</div>
+{% endblock %}
+
+{% block sidebar %}{% endblock %}

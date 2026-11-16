@@ -9,10 +9,6 @@ from django.views.generic import RedirectView
 from core.sitemaps import sitemaps
 from core.views import healthz, robots_txt
 
-admin.site.site_header = "Little Harvard ECD Centre"
-admin.site.site_title = "Little Harvard Admin"
-admin.site.index_title = "Website management"
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
