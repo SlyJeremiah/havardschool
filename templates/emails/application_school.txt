@@ -5,6 +5,7 @@ CHILD
   Date of birth:   {{ a.child_dob|date:"j F Y" }}
   Gender:          {{ a.get_child_gender_display }}
   Programme:       {{ a.programme|default:"Not sure — please advise" }}
+  Grade:           {{ a.get_grade_display|default:"-" }}
   Start:           {{ a.get_start_term_display }} {{ a.start_year }}
   Previous school: {{ a.previous_school|default:"-" }}
   Medical/needs:   {{ a.medical_notes|default:"-" }}

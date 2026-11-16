@@ -13,6 +13,8 @@ from datetime import date, time, timedelta
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
+from academics.junior_content import (AGES_FAQ_ANSWER, AGES_FAQ_QUESTION, ANNOUNCEMENT, JUNIOR_FAQ,
+                                      JUNIOR_PROGRAMME, JUNIOR_REQUIREMENT)
 from academics.models import Programme
 from admissions.models import AdmissionStep, Requirement
 from core.models import FAQ, Feature, SiteSettings
@@ -62,6 +64,7 @@ PROGRAMMES = [
                      "Children rest, eat, play and enjoy quiet activities and reading with caring staff.",
          learning_areas="Supervised play\nRest time\nHomework & reading support\nCreative activities",
          hours="Until 16:00 (Mon – Thu), 13:00 (Fri)"),
+    JUNIOR_PROGRAMME,
 ]
 
 STEPS = [
@@ -78,10 +81,12 @@ REQUIREMENTS = [
     "Copy of parent / guardian national ID",
     "Previous school report (if applicable)",
     "Completed application form",
+    JUNIOR_REQUIREMENT,
 ]
 
 FAQS = [
-    ("What ages do you accept?", "We welcome children from about 2 years (Baby Class) up to 5–6 years (ECD B). Contact us if you're unsure which class suits your child."),
+    (AGES_FAQ_QUESTION, AGES_FAQ_ANSWER),
+    JUNIOR_FAQ,
     ("What are your school hours?", "Monday to Thursday 08:00 – 16:00 and Friday 08:00 – 13:00. Early drop-off and day care may be available, so please ask the office."),
     ("Is the centre registered?", "Yes. Little Harvard is registered with the Ministry of Primary and Secondary Education and follows the national ECD curriculum."),
     ("Can I visit before enrolling?", "Absolutely. We encourage parents to visit, see the classrooms and meet the teachers. Book a visit by phone, WhatsApp or through the online application."),
@@ -117,7 +122,7 @@ class Command(BaseCommand):
         self._fill(Requirement, [dict(text=t, order=n) for n, t in enumerate(REQUIREMENTS)])
         self._fill(FAQ, [dict(question=q, answer=a, order=n) for n, (q, a) in enumerate(FAQS)])
 
-        self._fill(Post, [dict(
+        self._fill(Post, [ANNOUNCEMENT, dict(
             title="Learning the parts of the face",
             category="activity",
             body="Our ECD learners explored the parts of the face through a fun, hands-on activity. "

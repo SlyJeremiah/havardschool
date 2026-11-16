@@ -3,7 +3,7 @@
 {% block title %}Programmes | {{ site.school_name }}{% endblock %}
 
 {% block content %}
-{% include "partials/page_header.html" with title="Our programmes" subtitle="Play-based early childhood development aligned with Zimbabwe's ECD curriculum — building confident, curious and school-ready children." %}
+{% include "partials/page_header.html" with title="Our programmes" subtitle="From Baby Class to Grade 4: play-based early childhood development at Little Harvard ECD Centre, continuing into the primary years at Harvard Junior School." %}
 
 <section class="py-5">
   <div class="container">
@@ -12,6 +12,7 @@
       <div class="col-lg-5">
         <div class="ratio ratio-4x3 rounded-5 overflow-hidden shadow-sm">
           {% if p.image %}<img src="{{ p.image.url }}" alt="{{ p.name }}" class="object-fit-cover" loading="lazy">
+          {% elif p.slug == "junior-school" %}<div class="junior-art"><img src="{% static 'img/junior-logo.png' %}" alt="Harvard Junior School crest" loading="lazy"></div>
           {% else %}<div class="placeholder-art accent-bg-{{ p.color }} d-flex align-items-center justify-content-center"><i class="bi bi-balloon-heart"></i></div>{% endif %}
         </div>
       </div>

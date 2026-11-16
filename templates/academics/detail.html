@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load embeds %}
+{% load static embeds %}
 {% block title %}{{ programme.name }} ({{ programme.age_range }}) | {{ site.school_name }}{% endblock %}
 {% block meta_description %}{{ programme.summary }}{% endblock %}
 
@@ -12,6 +12,13 @@
     <div class="row g-5">
       <div class="col-lg-8">
         {% if programme.image %}<img src="{{ programme.image.url }}" alt="{{ programme.name }}" class="img-fluid rounded-5 shadow-sm mb-4">{% endif %}
+        {% if programme.slug == "junior-school" %}
+        <div class="d-flex align-items-center gap-3 p-3 rounded-4 bg-soft mb-4">
+          <img src="{% static 'img/junior-logo.png' %}" alt="Harvard Junior School crest" width="72" height="70">
+          <div><div class="fw-bold text-navy">Enrolment in progress for the 2027 academic year</div>
+            <div class="small text-body-secondary fst-italic">“Where Dreams Take Flight”</div></div>
+        </div>
+        {% endif %}
         {% for para in programme.description|paragraphs %}<p>{{ para }}</p>{% endfor %}
 
         {% if programme.learning_areas_list %}
@@ -36,7 +43,7 @@
         <div class="p-4 rounded-4 bg-white shadow-sm sticky-lg-top" style="top: 100px">
           <h2 class="h5 mb-3">At a glance</h2>
           <dl class="row small mb-4">
-            <dt class="col-5">Age</dt><dd class="col-7">{{ programme.age_range }}</dd>
+            <dt class="col-5">Level</dt><dd class="col-7">{{ programme.age_range }}</dd>
             {% if programme.class_size %}<dt class="col-5">Class size</dt><dd class="col-7">{{ programme.class_size }}</dd>{% endif %}
             {% if programme.hours %}<dt class="col-5">Hours</dt><dd class="col-7">{{ programme.hours }}</dd>{% endif %}
             <dt class="col-5">Fees</dt><dd class="col-7">{{ programme.fees|default:"Contact the office" }}</dd>
@@ -44,6 +51,11 @@
           <a href="{% url 'admissions:apply' %}?programme={{ programme.slug }}" class="btn btn-brand w-100 rounded-pill mb-2">Apply now</a>
           <a href="{% url 'core:contact' %}" class="btn btn-outline-navy w-100 rounded-pill">Ask a question</a>
         </div>
+        {% if programme.slug == "junior-school" %}
+        <a href="{% static 'img/junior-2027-flyer.jpg' %}" target="_blank" rel="noopener" class="d-block mt-4">
+          <img src="{% static 'img/junior-2027-flyer.jpg' %}" alt="2027 enrolment flyer for Harvard Junior School, Grades 1 to 4" class="img-fluid rounded-4 shadow-sm" loading="lazy">
+        </a>
+        {% endif %}
         {% if others %}
         <div class="mt-4">
           <h3 class="h6 text-uppercase text-muted">Other programmes</h3>

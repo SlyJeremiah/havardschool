@@ -61,7 +61,16 @@ h1, h2, h3, h4, h5, .display-4, .display-5, .display-6, .font-display, .brand-te
 .logo-card .b3 { width: 9%; aspect-ratio: 1; background: var(--lh-navy); opacity: .15; top: 16%; left: 14%; }
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 
-.stats { background: var(--lh-navy); color: #fff; }
+.junior-band { background: linear-gradient(120deg, var(--lh-navy) 0%, #24365f 55%, #c55f0a 160%); }
+.eyebrow-light { background: rgba(255,255,255,.14); color: var(--lh-yellow); }
+.junior-crest { background: #fff; border-radius: 18px; padding: 6px; object-fit: contain; }
+.junior-points li { margin-bottom: .4rem; }
+.junior-flyer { max-width: 400px; margin-inline: auto; }
+.junior-flyer img {box-shadow: 0 1.5rem 3rem rgba(0,0,0,.35); transform: rotate(2deg); transition: transform .25s ease; }
+.junior-flyer:hover img { transform: rotate(0) scale(1.02); }
+.junior-art { background: #fff; display: grid; place-items: center; }
+.junior-art img { width: 55%; height: auto; }
+.stats {background: var(--lh-navy); color: #fff; }
 .stat-num { font-family: "Baloo 2", sans-serif; font-weight: 800; font-size: 2.5rem; color: var(--lh-yellow); line-height: 1; }
 
 /* Cards */

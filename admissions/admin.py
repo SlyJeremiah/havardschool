@@ -32,9 +32,9 @@ def export_csv(modeladmin, request, queryset):
 
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
-    list_display = ("reference", "child_name", "programme", "start_term", "start_year",
+    list_display = ("reference", "child_name", "programme", "grade", "start_term", "start_year",
                     "parent_name", "parent_phone", "status", "created_at")
-    list_filter = ("status", "programme", "start_term", "start_year", "wants_visit")
+    list_filter = ("status", "programme", "grade", "start_term", "start_year", "wants_visit")
     list_editable = ("status",)
     search_fields = ("reference", "child_first_name", "child_last_name", "parent_name",
                      "parent_phone", "parent_email")
@@ -44,7 +44,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     fieldsets = (
         ("Status", {"fields": ("reference", "status", "staff_notes", "created_at")}),
         ("Child", {"fields": ("child_first_name", "child_last_name", "child_dob", "child_gender",
-                              "programme", "start_term", "start_year", "previous_school",
+                              "programme", "grade", "start_term", "start_year", "previous_school",
                               "medical_notes")}),
         ("Parent / guardian", {"fields": ("parent_name", "relationship", "parent_phone", "parent_email",
                                           "home_address", "how_heard", "wants_visit", "notes")}),

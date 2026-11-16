@@ -86,6 +86,48 @@ class SiteTests(TestCase):
         self.assertEqual(r.status_code, 200)
         self.assertEqual(Application.objects.count(), 0)
 
+    def _junior_post(self, **extra):
+        data = {
+            "child_first_name": "Rufaro", "child_last_name": "Ncube",
+            "child_dob": date(date.today().year - 7, 5, 1).isoformat(), "child_gender": "girl",
+            "start_term": "term1", "start_year": date.today().year + 1,
+            "parent_name": "Tendai Ncube", "relationship": "Father", "parent_phone": "0779999999",
+            "parent_email": "tendai@example.test", "consent": "on", "website": "",
+        }
+        data.update(extra)
+        return self.client.post(reverse("admissions:apply"), data)
+
+    def test_junior_school_seeded_and_on_homepage(self):
+        junior = Programme.objects.get(slug="junior-school")
+        home = self.client.get(reverse("core:home"))
+        self.assertContains(home, "Harvard Junior School")
+        self.assertContains(home, "Grades 1 – 4")
+        self.assertEqual(self.client.get(junior.get_absolute_url()).status_code, 200)
+        self.assertTrue(Post.objects.filter(slug="enrolment-2027-grades-1-4").exists())
+
+    def test_junior_application_with_grade(self):
+        junior = Programme.objects.get(slug="junior-school")
+        r = self._junior_post(programme=junior.pk, grade="grade2")
+        app = Application.objects.get()
+        self.assertRedirects(r, reverse("admissions:thanks", args=[app.reference]))
+        self.assertEqual(app.get_grade_display(), "Grade 2")
+        self.assertIn("Grade 2", mail.outbox[0].body)
+
+    def test_grade_without_programme_picks_junior(self):
+        self._junior_post(grade="grade1")
+        self.assertEqual(Application.objects.get().programme.slug, "junior-school")
+
+    def test_junior_requires_grade(self):
+        junior = Programme.objects.get(slug="junior-school")
+        r = self._junior_post(programme=junior.pk)
+        self.assertEqual(r.status_code, 200)
+        self.assertFalse(Application.objects.exists())
+
+    def test_grade_with_ecd_programme_rejected(self):
+        r = self._junior_post(programme=Programme.objects.get(slug="ecd-a").pk, grade="grade3")
+        self.assertEqual(r.status_code, 200)
+        self.assertFalse(Application.objects.exists())
+
     def test_video_embeds(self):
         self.assertIn("youtube-nocookie.com/embed/dQw4w9WgXcQ",
                       video_embed_url("https://youtu.be/dQw4w9WgXcQ"))

@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_GET
 
+from academics.junior_content import JUNIOR_SLUG
 from academics.models import Programme
 from gallery.models import Photo
 from news.models import Event, Post
@@ -20,7 +21,8 @@ from .models import FAQ, Feature, StaffMember, Testimonial
 def home(request):
     return render(request, "core/home.html", {
         "features": Feature.objects.all()[:6],
-        "programmes": Programme.objects.filter(is_active=True)[:4],
+        "programmes": Programme.objects.filter(is_active=True).exclude(slug=JUNIOR_SLUG)[:4],
+        "junior": Programme.objects.filter(is_active=True, slug=JUNIOR_SLUG).first(),
         "posts": Post.objects.published()[:3],
         "events": Event.objects.filter(date__gte=timezone.localdate())[:3],
         "photos": Photo.objects.filter(album__is_published=True).select_related("album")[:8],

@@ -11,8 +11,8 @@ class SiteSettings(models.Model):
     logo = models.ImageField(upload_to="site/", blank=True, help_text="Square PNG recommended.")
     hero_title = models.CharField(max_length=160, default="Where little minds hatch big dreams")
     hero_subtitle = models.TextField(
-        default="A caring Early Childhood Development centre in Southwood, Kwekwe, where children "
-        "learn through play, discovery and hands-on activities."
+        default="A caring Early Childhood Development centre and junior school (Grades 1 – 4) in Southwood, "
+        "Kwekwe, where children learn through play, discovery and hands-on activities."
     )
     hero_image = models.ImageField(upload_to="site/", blank=True)
 
@@ -22,7 +22,7 @@ class SiteSettings(models.Model):
     core_values = models.TextField(blank=True, help_text="One value per line.")
     about_image = models.ImageField(upload_to="site/", blank=True)
 
-    address = models.CharField(max_length=200, default="87 Link Drive, Southwood, Kwekwe, Zimbabwe")
+    address = models.CharField(max_length=200, default="87 Link Drive, Southwood, Masasa Park, Kwekwe, Zimbabwe")
     phone = models.CharField(max_length=40, default="079 020 5518")
     phone_alt = models.CharField(max_length=40, blank=True, default="055 252 3573")
     whatsapp = models.CharField(
@@ -34,7 +34,7 @@ class SiteSettings(models.Model):
         help_text="One line per row.",
     )
     map_query = models.CharField(
-        max_length=200, default="87 Link Drive, Southwood, Kwekwe, Zimbabwe",
+        max_length=200, default="87 Link Drive, Southwood, Masasa Park, Kwekwe, Zimbabwe",
         help_text="Address or coordinates used for the Google Map embed.",
     )
 
@@ -50,12 +50,12 @@ class SiteSettings(models.Model):
 
     admissions_open = models.BooleanField(default=True)
     admissions_banner = models.CharField(
-        max_length=200, blank=True, default="Enrolment is now open for the new term — book a visit today!"
+        max_length=200, blank=True, default="Enrolment in progress for the 2027 academic year — now offering Grades 1 – 4!"
     )
     meta_description = models.CharField(
         max_length=300,
         default="Little Harvard ECD Centre in Southwood, Kwekwe, Zimbabwe — quality early childhood "
-        "education (ECD A & B), play-based learning and a caring environment.",
+        "education (ECD A & B) and Harvard Junior School (Grades 1 – 4) in a caring environment.",
     )
 
     class Meta:

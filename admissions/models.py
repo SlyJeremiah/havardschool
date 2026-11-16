@@ -36,6 +36,7 @@ class Application(models.Model):
     ]
     TERMS = [("term1", "Term 1 (January)"), ("term2", "Term 2 (May)"), ("term3", "Term 3 (September)")]
     GENDER = [("girl", "Girl"), ("boy", "Boy")]
+    GRADES = [("grade1", "Grade 1"), ("grade2", "Grade 2"), ("grade3", "Grade 3"), ("grade4", "Grade 4")]
 
     reference = models.CharField(max_length=20, unique=True, editable=False)
     child_first_name = models.CharField("Child's first name", max_length=60)
@@ -45,6 +46,10 @@ class Application(models.Model):
     programme = models.ForeignKey(
         "academics.Programme", on_delete=models.SET_NULL, null=True, blank=True,
         verbose_name="Programme applying for",
+    )
+    grade = models.CharField(
+        "Grade applying for (Junior School)", max_length=10, choices=GRADES, blank=True,
+        help_text="Only for Harvard Junior School applicants.",
     )
     start_term = models.CharField("Preferred start term", max_length=10, choices=TERMS)
     start_year = models.PositiveIntegerField("Year")
