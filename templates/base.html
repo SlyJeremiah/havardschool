@@ -11,9 +11,11 @@
   <meta property="og:title" content="{% block og_title %}{{ site.school_name }}{% endblock %}">
   <meta property="og:description" content="{% block og_description %}{{ site.meta_description }}{% endblock %}">
   <meta property="og:url" content="{{ SITE_URL }}{{ request.path }}">
-  {% block og_image %}{% if site.hero_image %}<meta property="og:image" content="{{ site.hero_image.url }}">{% endif %}{% endblock %}
+  {% block og_image %}<meta property="og:image" content="{% if site.hero_image %}{{ site.hero_image.url }}{% else %}{{ SITE_URL }}{% static 'img/icon-192.png' %}{% endif %}">{% endblock %}
   <meta name="theme-color" content="#1b2a4a">
-  <link rel="icon" href="{% if site.logo %}{{ site.logo.url }}{% else %}{% static 'img/logo.svg' %}{% endif %}">
+  <link rel="icon" href="{% static 'favicon.ico' %}" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32.png' %}">
+  <link rel="apple-touch-icon" href="{% static 'img/apple-touch-icon.png' %}">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,7 +69,7 @@
   <nav class="navbar navbar-expand-lg bg-white sticky-top shadow-sm">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'core:home' %}">
-        <img src="{% if site.logo %}{{ site.logo.url }}{% else %}{% static 'img/logo.svg' %}{% endif %}" alt="" width="48" height="48" class="rounded-circle">
+        <img src="{% if site.logo %}{{ site.logo.url }}{% else %}{% static 'img/logo.png' %}{% endif %}" alt="" width="52" height="52" style="object-fit:contain">
         <span class="brand-text lh-1">{{ site.short_name }}<small class="d-block">ECD Centre · Kwekwe</small></span>
       </a>
       <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -119,7 +121,7 @@
       <div class="row g-4">
         <div class="col-lg-4">
           <div class="d-flex align-items-center gap-2 mb-3">
-            <img src="{% if site.logo %}{{ site.logo.url }}{% else %}{% static 'img/logo.svg' %}{% endif %}" alt="" width="56" height="56" class="rounded-circle bg-white">
+            <img src="{% if site.logo %}{{ site.logo.url }}{% else %}{% static 'img/logo.png' %}{% endif %}" alt="" width="56" height="56" class="rounded-circle bg-white">
             <span class="h5 mb-0 font-display">{{ site.school_name }}</span>
           </div>
           <p class="opacity-75">{{ site.tagline }}</p>

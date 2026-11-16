@@ -86,6 +86,10 @@ def healthz(request):
         except Exception as exc:
             checks["media_storage_connected"] = False
             checks["media_storage_error"] = type(exc).__name__
+            if isinstance(exc, ValueError):  # boto config errors, e.g. bad endpoint; no secrets
+                checks["media_storage_detail"] = str(exc)[:200]
+            checks["media_storage_endpoint"] = settings.AWS_S3_ENDPOINT_URL
+            checks["media_storage_region"] = settings.AWS_S3_REGION_NAME
     ok = db.get("connected") and db.get("pending_migrations") == 0
     return JsonResponse({"ok": bool(ok), **checks}, status=200 if ok else 503)
 

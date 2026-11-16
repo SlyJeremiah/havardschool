@@ -104,14 +104,25 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles_build" / "static"
 
 # --- Media: Backblaze B2 (S3-compatible) when configured, else local disk ---
-B2_BUCKET = os.environ.get("B2_BUCKET_NAME")
+def env_clean(name, default=""):
+    """Env value with whitespace/quotes stripped (common copy-paste slips)."""
+    return os.environ.get(name, default).strip().strip("\"'").strip()
+
+
+B2_BUCKET = env_clean("B2_BUCKET_NAME")
 if B2_BUCKET:
-    AWS_ACCESS_KEY_ID = os.environ["B2_KEY_ID"]
-    AWS_SECRET_ACCESS_KEY = os.environ["B2_APPLICATION_KEY"]
+    AWS_ACCESS_KEY_ID = env_clean("B2_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = env_clean("B2_APPLICATION_KEY")
     AWS_STORAGE_BUCKET_NAME = B2_BUCKET
-    # e.g. https://s3.us-west-004.backblazeb2.com
-    AWS_S3_ENDPOINT_URL = os.environ["B2_ENDPOINT_URL"]
-    AWS_S3_REGION_NAME = os.environ.get("B2_REGION", "us-west-004")
+    # e.g. https://s3.us-west-004.backblazeb2.com — accept it with or without the scheme
+    _endpoint = env_clean("B2_ENDPOINT_URL").rstrip("/")
+    if _endpoint and not _endpoint.startswith(("http://", "https://")):
+        _endpoint = "https://" + _endpoint
+    AWS_S3_ENDPOINT_URL = _endpoint
+    # Region defaults to the one embedded in the endpoint (s3.<region>.backblazeb2.com)
+    _host = _endpoint.split("://", 1)[-1]
+    AWS_S3_REGION_NAME = env_clean("B2_REGION") or (
+        _host.split(".")[1] if _host.startswith("s3.") else "us-west-004")
     AWS_S3_SIGNATURE_VERSION = "s3v4"
     # boto3 >= 1.36 sends CRC checksum headers by default, which B2 rejects
     from botocore.config import Config as _BotoConfig
@@ -166,7 +177,7 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 SCHOOL_NOTIFY_EMAILS = env_list("SCHOOL_NOTIFY_EMAILS", "lilharvard5@gmail.com")
 
 # --- Google Analytics 4 ---
-GA_MEASUREMENT_ID = os.environ.get("GA_MEASUREMENT_ID", "")
+GA_MEASUREMENT_ID = env_clean("GA_MEASUREMENT_ID")
 
 _vercel_host = os.environ.get("VERCEL_PROJECT_PRODUCTION_URL") or os.environ.get("VERCEL_URL")
 SITE_URL = os.environ.get(
