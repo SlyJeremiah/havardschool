@@ -78,6 +78,14 @@ def healthz(request):
         "email_configured": bool(settings.EMAIL_HOST_USER and settings.EMAIL_HOST_PASSWORD),
         "google_analytics": bool(settings.GA_MEASUREMENT_ID),
     }
+    if settings.B2_BUCKET:
+        from django.core.files.storage import default_storage
+        try:
+            default_storage.connection.meta.client.head_bucket(Bucket=settings.B2_BUCKET)
+            checks["media_storage_connected"] = True
+        except Exception as exc:
+            checks["media_storage_connected"] = False
+            checks["media_storage_error"] = type(exc).__name__
     ok = db.get("connected") and db.get("pending_migrations") == 0
     return JsonResponse({"ok": bool(ok), **checks}, status=200 if ok else 503)
 

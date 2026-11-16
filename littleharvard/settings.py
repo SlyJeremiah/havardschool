@@ -113,6 +113,14 @@ if B2_BUCKET:
     AWS_S3_ENDPOINT_URL = os.environ["B2_ENDPOINT_URL"]
     AWS_S3_REGION_NAME = os.environ.get("B2_REGION", "us-west-004")
     AWS_S3_SIGNATURE_VERSION = "s3v4"
+    # boto3 >= 1.36 sends CRC checksum headers by default, which B2 rejects
+    from botocore.config import Config as _BotoConfig
+
+    AWS_S3_CLIENT_CONFIG = _BotoConfig(
+        signature_version="s3v4",
+        request_checksum_calculation="when_required",
+        response_checksum_validation="when_required",
+    )
     AWS_DEFAULT_ACL = None
     AWS_QUERYSTRING_AUTH = env_bool("B2_PRIVATE_BUCKET", False)
     AWS_S3_FILE_OVERWRITE = False
