@@ -1,6 +1,8 @@
+import os
+
 from django.conf import settings
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -51,6 +53,33 @@ def contact(request):
 def robots_txt(request):
     lines = ["User-agent: *", "Disallow: /admin/", f"Sitemap: {settings.SITE_URL}/sitemap.xml"]
     return HttpResponse("\n".join(lines), content_type="text/plain")
+
+
+@require_GET
+def healthz(request):
+    """Deployment diagnostics: reports which pieces are configured, never their values."""
+    from django.db import connection
+    from django.db.migrations.executor import MigrationExecutor
+
+    db = {"engine": connection.vendor, "database_url_set": bool(os.environ.get("DATABASE_URL"))}
+    try:
+        connection.ensure_connection()
+        executor = MigrationExecutor(connection)
+        pending = executor.migration_plan(executor.loader.graph.leaf_nodes())
+        db.update(connected=True, pending_migrations=len(pending))
+    except Exception as exc:
+        db.update(connected=False, error=type(exc).__name__)
+    checks = {
+        "database": db,
+        "debug": settings.DEBUG,
+        "secret_key_set": bool(os.environ.get("SECRET_KEY")),
+        "site_url": settings.SITE_URL,
+        "media_storage": "backblaze-b2" if settings.B2_BUCKET else "local-disk (read-only on Vercel)",
+        "email_configured": bool(settings.EMAIL_HOST_USER and settings.EMAIL_HOST_PASSWORD),
+        "google_analytics": bool(settings.GA_MEASUREMENT_ID),
+    }
+    ok = db.get("connected") and db.get("pending_migrations") == 0
+    return JsonResponse({"ok": bool(ok), **checks}, status=200 if ok else 503)
 
 
 def page_not_found(request, exception):

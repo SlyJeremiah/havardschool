@@ -5,7 +5,7 @@ from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
 
 from core.sitemaps import sitemaps
-from core.views import robots_txt
+from core.views import healthz, robots_txt
 
 admin.site.site_header = "Little Harvard ECD Centre"
 admin.site.site_title = "Little Harvard Admin"
@@ -15,6 +15,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
     path("robots.txt", robots_txt, name="robots_txt"),
+    path("healthz/", healthz, name="healthz"),
     path("programmes/", include("academics.urls")),
     path("admissions/", include("admissions.urls")),
     path("news/", include("news.urls")),

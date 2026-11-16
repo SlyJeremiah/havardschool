@@ -160,7 +160,10 @@ SCHOOL_NOTIFY_EMAILS = env_list("SCHOOL_NOTIFY_EMAILS", "lilharvard5@gmail.com")
 # --- Google Analytics 4 ---
 GA_MEASUREMENT_ID = os.environ.get("GA_MEASUREMENT_ID", "")
 
-SITE_URL = os.environ.get("SITE_URL", "http://localhost:8000").rstrip("/")
+_vercel_host = os.environ.get("VERCEL_PROJECT_PRODUCTION_URL") or os.environ.get("VERCEL_URL")
+SITE_URL = os.environ.get(
+    "SITE_URL", f"https://{_vercel_host}" if _vercel_host else "http://localhost:8000"
+).rstrip("/")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
