@@ -74,7 +74,9 @@ Mark `generate_lead` as a key event in GA.
 2. Add the environment variables from `.env.example` (with `DEBUG=False`, a long random `SECRET_KEY`,
    `SITE_URL=https://your-domain`, and your domain in `ALLOWED_HOSTS` / `CSRF_TRUSTED_ORIGINS`).
 3. Deploy. `build_files.sh` installs dependencies, runs `collectstatic` and `migrate`.
-4. Once, from your machine pointed at the production DB: `python manage.py createsuperuser` and `python manage.py seed_site`.
+4. First admin account: add `DJANGO_SUPERUSER_USERNAME`, `DJANGO_SUPERUSER_EMAIL` and `DJANGO_SUPERUSER_PASSWORD`
+   in Vercel and redeploy. The build creates the account if it doesn't exist (starter content is loaded automatically
+   on the first deploy). Log in at `/admin/`, then **delete those three variables**.
 5. Add a custom domain (e.g. `littleharvard.co.zw`) under Project → Domains. SSL is automatic.
 
 **Serverless limits to know:** requests are capped at about 4.5 MB, so upload gallery photos 3–5 at a time

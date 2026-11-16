@@ -15,4 +15,6 @@ if [ -n "$DATABASE_URL" ]; then
   $PY manage.py migrate --noinput
   # Loads starter content on the very first deploy only
   $PY manage.py seed_site --once
+  # Creates the first admin from DJANGO_SUPERUSER_* variables (skips if unset or already exists)
+  $PY manage.py ensure_superuser
 fi
