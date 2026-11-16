@@ -37,7 +37,8 @@ h1, h2, h3, h4, h5, .display-4, .display-5, .display-6, .font-display, .brand-te
 .topbar a { color: var(--lh-yellow); text-decoration: none; }
 .brand-text { font-size: 1.35rem; }
 .brand-text small { font-family: "Nunito", sans-serif; font-weight: 600; font-size: .7rem; color: #6c757d; letter-spacing: .03em; }
-.navbar .nav-link { font-weight: 700; color: var(--lh-navy); border-radius: 999px; padding-inline: .9rem !important; }
+.navbar .nav-link { font-weight: 700; color: var(--lh-navy); border-radius: 999px; padding-inline: .9rem !important; white-space: nowrap; }
+.navbar .btn { white-space: nowrap; }
 .navbar .nav-link.active, .navbar .nav-link:hover { color: var(--lh-orange); }
 
 /* Hero */

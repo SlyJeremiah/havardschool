@@ -94,9 +94,14 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument("--force", action="store_true", help="Overwrite Site settings text fields.")
+        parser.add_argument("--once", action="store_true",
+                            help="Do nothing if the site has been seeded before (used on deploy).")
 
-    def handle(self, *args, force=False, **opts):
+    def handle(self, *args, force=False, once=False, **opts):
         s = SiteSettings.load()
+        if once and s.about_intro:
+            self.stdout.write("Site already seeded - skipping.")
+            return
         if force or not s.about_intro:
             s.about_intro = ABOUT
             s.mission = ("To provide a safe, loving and stimulating environment where every child develops "

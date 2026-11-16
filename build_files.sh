@@ -13,4 +13,6 @@ $PY manage.py collectstatic --noinput --clear
 # Apply database migrations on each deploy (needs DATABASE_URL in the build env)
 if [ -n "$DATABASE_URL" ]; then
   $PY manage.py migrate --noinput
+  # Loads starter content on the very first deploy only
+  $PY manage.py seed_site --once
 fi
