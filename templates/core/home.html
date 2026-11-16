@@ -23,7 +23,10 @@
           {% if site.hero_image %}
             <img src="{{ site.hero_image.url }}" alt="Learners at {{ site.school_name }}" class="img-fluid rounded-5 shadow-lg">
           {% else %}
-            {% include "partials/logo_card.html" %}
+            <figure class="hero-photo position-relative mb-0">
+              <img src="{% static 'img/hero-photo.jpg' %}" alt="Little Harvard learners in their football kit on the school playground" width="1100" height="1085" class="rounded-5 shadow-lg" fetchpriority="high">
+              <img src="{% static 'img/logo-hero.png' %}" alt="" class="hero-badge" width="96" height="96">
+            </figure>
           {% endif %}
         </div>
       </div>

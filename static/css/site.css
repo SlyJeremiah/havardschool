@@ -47,7 +47,11 @@ h1, h2, h3, h4, h5, .display-4, .display-5, .display-6, .font-display, .brand-te
 .eyebrow { display: inline-block; font-weight: 800; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em;
   color: var(--lh-orange); background: #fff1e3; padding: .35rem .8rem; border-radius: 999px; }
 .hero-visual > img { max-height: 480px; object-fit: cover; width: 100%; }
-.logo-card { background: linear-gradient(135deg, #fff1d0, #ffe6d1); aspect-ratio: 6 / 5;
+.hero-photo > img:first-child { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; object-position: center 40%; max-height: 520px; }
+.hero-badge { position: absolute; left: -14px; bottom: -14px; width: 96px; height: 96px; padding: 8px;
+  background: #fff; border-radius: 50%; box-shadow: 0 .5rem 1.25rem rgba(27,42,74,.2); object-fit: contain; }
+@media (max-width: 575.98px) { .hero-badge { width: 72px; height: 72px; left: 8px; bottom: -12px; } }
+.logo-card {background: linear-gradient(135deg, #fff1d0, #ffe6d1); aspect-ratio: 6 / 5;
   display: grid; place-items: center; box-shadow: 0 1rem 2.5rem rgba(240,127,30,.15); }
 .logo-card-img { position: relative; z-index: 1; width: 62%; height: auto; max-width: 360px;
   filter: drop-shadow(0 12px 18px rgba(27,42,74,.18)); animation: bob 5s ease-in-out infinite; }
