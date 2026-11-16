@@ -46,7 +46,16 @@ h1, h2, h3, h4, h5, .display-4, .display-5, .display-6, .font-display, .brand-te
                     radial-gradient(circle at 10% 90%, #e5f5e7 0, transparent 40%), #fffdf8; }
 .eyebrow { display: inline-block; font-weight: 800; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em;
   color: var(--lh-orange); background: #fff1e3; padding: .35rem .8rem; border-radius: 999px; }
-.hero-visual img { max-height: 480px; object-fit: cover; width: 100%; }
+.hero-visual > img { max-height: 480px; object-fit: cover; width: 100%; }
+.logo-card { background: linear-gradient(135deg, #fff1d0, #ffe6d1); aspect-ratio: 6 / 5;
+  display: grid; place-items: center; box-shadow: 0 1rem 2.5rem rgba(240,127,30,.15); }
+.logo-card-img { position: relative; z-index: 1; width: 62%; height: auto; max-width: 360px;
+  filter: drop-shadow(0 12px 18px rgba(27,42,74,.18)); animation: bob 5s ease-in-out infinite; }
+.logo-card .blob { position: absolute; border-radius: 50%; }
+.logo-card .b1 { width: 38%; aspect-ratio: 1; background: #ffd45c; opacity: .55; top: -8%; right: -6%; }
+.logo-card .b2 { width: 30%; aspect-ratio: 1; background: #c9ebcd; opacity: .8; bottom: -8%; left: -6%; }
+.logo-card .b3 { width: 9%; aspect-ratio: 1; background: var(--lh-navy); opacity: .15; top: 16%; left: 14%; }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 
 .stats { background: var(--lh-navy); color: #fff; }
 .stat-num { font-family: "Baloo 2", sans-serif; font-weight: 800; font-size: 2.5rem; color: var(--lh-yellow); line-height: 1; }
@@ -121,4 +130,4 @@ h1, h2, h3, h4, h5, .display-4, .display-5, .display-6, .font-display, .brand-te
   background: #25d366; color: #fff; display: grid; place-items: center; font-size: 1.8rem; box-shadow: 0 .5rem 1rem rgba(0,0,0,.2); }
 .whatsapp-float:hover { color: #fff; transform: scale(1.06); }
 
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

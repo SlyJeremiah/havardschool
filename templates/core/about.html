@@ -17,7 +17,7 @@
         {% if site.about_image %}
           <img src="{{ site.about_image.url }}" alt="{{ site.school_name }}" class="img-fluid rounded-5 shadow">
         {% else %}
-          <img src="{% static 'img/hero-illustration.svg' %}" alt="" class="img-fluid">
+          {% include "partials/logo_card.html" %}
         {% endif %}
       </div>
     </div>

@@ -184,7 +184,10 @@ SITE_URL = os.environ.get(
     "SITE_URL", f"https://{_vercel_host}" if _vercel_host else "http://localhost:8000"
 ).rstrip("/")
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+# Appended to CSS/JS URLs so each deploy busts browser/CDN caches
+ASSET_VERSION = (os.environ.get("VERCEL_GIT_COMMIT_SHA") or "dev")[:8]
+
+DEFAULT_AUTO_FIELD ="django.db.models.BigAutoField"
 
 # --- Security for production ---
 if not DEBUG:

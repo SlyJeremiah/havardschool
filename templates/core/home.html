@@ -23,7 +23,7 @@
           {% if site.hero_image %}
             <img src="{{ site.hero_image.url }}" alt="Learners at {{ site.school_name }}" class="img-fluid rounded-5 shadow-lg">
           {% else %}
-            <img src="{% static 'img/hero-illustration.svg' %}" alt="" class="img-fluid">
+            {% include "partials/logo_card.html" %}
           {% endif %}
         </div>
       </div>
